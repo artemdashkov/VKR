@@ -1,0 +1,5 @@
+/.idea
+/.venv
+/logs
+/gpt2_user_stories_model
+/t5_user_stories_model
