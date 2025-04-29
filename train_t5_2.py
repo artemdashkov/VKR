@@ -2,7 +2,6 @@ import pandas as pd
 from transformers import T5Tokenizer, T5ForConditionalGeneration, Trainer, TrainingArguments
 from datasets import Dataset
 
-# Замените на имя вашей модели
 model_name = "t5-small"
 
 # Инициализация токенизатора и модели
@@ -10,12 +9,11 @@ tokenizer = T5Tokenizer.from_pretrained(model_name)
 model = T5ForConditionalGeneration.from_pretrained(model_name)
 
 # Загрузка данных
-data_file = 'dataset.csv'  # Путь к вашему файлу
-data = pd.read_csv(data_file)  # Предположим, что у вас есть заголовки в файле
+data_file = 'dataset.csv'
+data = pd.read_csv(data_file)
 
 # Преобразование данных в формат, совместимый с Hugging Face Datasets
-# Если в вашем файле нет заголовков, добавьте их в read_csv
-data.columns = ["specification", "user_story"]  # Настройте название столбцов в зависимости от вашего файла
+data.columns = ["specification", "user_story"]
 dataset = Dataset.from_pandas(data)
 
 # Функция для токенизации данных

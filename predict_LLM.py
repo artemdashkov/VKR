@@ -15,6 +15,6 @@ def generate_user_story(input_specification):
     output = model.generate(input_ids, max_length=60)
     return tokenizer.decode(output[0], skip_special_tokens=True)
 
-result_1 = generate_user_story("Create a test case for the requirement: 'User should be able to subscribe to newsletters.'")
+result_1 = generate_user_story("Create a test case for the requirement: 'User should be able to create and manage a shopping list'")
 
 print(result_1)
