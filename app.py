@@ -17,7 +17,7 @@ def index():
     list_of_tests = []
 
     if request.method == 'POST':
-        user_story = request.form['user_story']
+        user_story = request.form['user_story'] + ". Create a detailed test case."
         # Токенизация входных данных
         inputs = tokenizer(
             user_story,
