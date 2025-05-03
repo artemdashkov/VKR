@@ -1,5 +1,5 @@
 from flask import Flask, request, render_template
-import torch
+import re
 from transformers import BartTokenizer, BartForConditionalGeneration
 
 app = Flask(__name__)
@@ -41,20 +41,26 @@ def index():
         # Расшифровка
         test_case_text = tokenizer.decode(outputs[0], skip_special_tokens=True)
 
-        # Простое деление текста на части
-        lines = test_case_text.split('\n')
+        pattern = r"Test Case:\s*(.+?);?\s*Steps:\s*(.+?);?\s*Expected Result:\s*(.+)$"
+        match = re.match(pattern, test_case_text)
 
-        title = lines[0] if len(lines) > 0 else "Title"
-        steps = lines[1] if len(lines) > 1 else "Steps"
-        expected = lines[2] if len(lines) > 2 else "Expected Result"
-
-        # Добавляем в список для таблицы
-        list_of_tests.append({
-            'ID': 1,
-            'Title test case': title,
-            'Steps': steps,
-            'Expected Result': expected
-        })
+        if match:
+            ID = "1"
+            title = match.group(1).strip()
+            steps_raw = match.group(2).strip()
+            steps = []
+            for step in steps_raw.split("; "):
+                step = str(int(steps_raw.split("; ").index(step)) + 1) + "." + " " + step
+                steps.append(step)
+            expected_result = match.group(3).strip()
+            list_of_tests.append({
+                    'ID': ID,
+                    'Title test case': title,
+                    'Steps': steps,
+                    'Expected Result': expected_result
+                })
+        else:
+            print("Не удалось распарсить строку")
 
     return render_template('index.html', list_of_tests=list_of_tests)
 
