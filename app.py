@@ -11,13 +11,14 @@ model_path = './content/drive/MyDrive/bart_test_case_saved'
 tokenizer = BartTokenizer.from_pretrained(model_path)
 model = BartForConditionalGeneration.from_pretrained(model_path)
 
+
 @app.route('/', methods=['GET', 'POST'])
 def index():
-    test_case = ""
-    user_story = ""
+    list_of_tests = []
+
     if request.method == 'POST':
         user_story = request.form['user_story']
-        # Токенизация входных данных
+        # Токенизация и генерация
         inputs = tokenizer(
             user_story,
             max_length=512,
@@ -25,7 +26,6 @@ def index():
             truncation=True,
             return_tensors='pt'
         )
-        # Генерация тест-кейса
         outputs = model.generate(
             input_ids=inputs['input_ids'],
             attention_mask=inputs['attention_mask'],
@@ -37,9 +37,22 @@ def index():
             num_return_sequences=1,
             pad_token_id=tokenizer.eos_token_id
         )
-        # Расшифровка
-        test_case = tokenizer.decode(outputs[0], skip_special_tokens=True)
-    return render_template('index.html', test_case=test_case, user_story=user_story)
+        test_case_text = tokenizer.decode(outputs[0], skip_special_tokens=True)
+
+        # Просто делим ответ на 3 строки
+        lines = test_case_text.split('\n')
+        title = lines[0] if len(lines) > 0 else "Title"
+        steps = lines[1] if len(lines) > 1 else "Steps"
+        expected = lines[2] if len(lines) > 2 else "Expected Result"
+
+        list_of_tests.append({
+            'ID': 1,
+            'Title test case': title,
+            'Steps': steps,
+            'Expected Result': expected
+        })
+
+    return render_template('index.html', list_of_tests=list_of_tests)
 
 if __name__ == '__main__':
     app.run(debug=True)
