@@ -37,7 +37,7 @@ train_test_split = tokenized_dataset.train_test_split(test_size=0.1)
 
 # Определение аргументов для обучения
 training_args = TrainingArguments(
-    output_dir="./t5_user_stories_model",  # Директория для сохранения модели
+    output_dir="content/drive/MyDrive/t5_user_stories_model",  # Директория для сохранения модели
     learning_rate=5e-5,  # Скорость обучения
     per_device_train_batch_size=8,  # Размер батча
     num_train_epochs=5,  # Увеличенное количество эпох

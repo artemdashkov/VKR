@@ -1,7 +1,8 @@
 from transformers import T5Tokenizer, T5ForConditionalGeneration  
 
 # Загрузка предобученной модели и токенизатора
-model_name = "./t5_user_stories_model"
+# model_name = "/content/drive/MyDrive/t5_user_stories_model"  # for notebook
+model_name = "./content/drive/MyDrive/t5_user_stories_model"
 tokenizer = T5Tokenizer.from_pretrained(model_name)
 model = T5ForConditionalGeneration.from_pretrained(model_name)
 
@@ -16,4 +17,5 @@ output_ids = model.generate(input_ids, max_length=100, num_beams=4, do_sample=Tr
 
 # Декодирование результата
 output_text = tokenizer.decode(output_ids[0], skip_special_tokens=True)
-print("Generated Output:", output_text)
+print("Intput:", input_text)
+print("Output:", output_text)

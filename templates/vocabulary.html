@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Vocabulary - Learn english like a native with YouTube
+{% endblock %}
+
+
+{% block body %}
+    <div class="container text-center">
+        <h1 class="display-5 fw-bold text-center">Vocabulary</h1>
+        <h4>How many words do you need to know in English?</h4>
+        <p class="fs-5 mb-4">Let's count! (spoiler - not much)</p>
+
+        <form method="post">
+            <div class="row g-3">
+            <div class="col-12">
+            <input type="text" name="video_link" id="video_link" class="form-control" placeholder="Insert link on YouTube video"><br>
+            </div>
+            </div>
+            <input type="submit" class="btn btn-outline-light btn-lg px-4" value="Send"><br>
+        </form>
+
+    </div>
+
+    <div class="container mt-5">
+        <p > <b>Video link:</b> <a href="{{ video_link }}">{{ video_link }}</a></p>
+        <p > <b>Quantity all words in video:</b> {{ quantity_all_words }}</p>
+        <p > <b>Quantity unique words in video:</b> {{ quantity_unique_words }} </p>
+        <table class="table table-dark table-striped">
+              <thead>
+                <tr>
+                  <th scope="col">#</th>
+                  <th scope="col">Word</th>
+                  <th scope="col">Number of repetitions</th>
+                </tr>
+              </thead>
+
+              <tbody>
+              {% for el in list_count_word_repeat %}
+                <tr>
+                  <th scope="row"> {{ el[0] }} </th>
+                  <td>{{ el[1] }}</td>
+                  <td>{{ el[2] }}</td>
+                </tr>
+              {% endfor %}
+              </tbody>
+
+            </table>
+    </div>
+
+{% endblock %}

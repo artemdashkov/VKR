@@ -1,20 +1,51 @@
-import torch
-from transformers import T5Tokenizer, T5ForConditionalGeneration
+from transformers import GPT2LMHeadModel, GPT2Tokenizer
 
-# Загрузка предобученной модели и токенизатора
-model_name = "./t5_user_stories_model"
-tokenizer = T5Tokenizer.from_pretrained(model_name)
-model = T5ForConditionalGeneration.from_pretrained(model_name)
+# model_path = "/content/drive/MyDrive/gpt2_finetuned" # for notebook
+model_path = "./content/drive/MyDrive/gpt2_finetuned"
 
-device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-model.to(device)
+model = GPT2LMHeadModel.from_pretrained(model_path)
+tokenizer = GPT2Tokenizer.from_pretrained(model_path)
 
-# Функция для генерации юзер-историй на основе требований
-def generate_user_story(input_specification):
-    input_ids = tokenizer(input_specification + tokenizer.eos_token, return_tensors='pt').input_ids.to(device)
-    output = model.generate(input_ids, max_length=60)
-    return tokenizer.decode(output[0], skip_special_tokens=True)
+# Входной текст
+input_text = (
+    "Requirement: 'User should be able to create and manage a shopping list'.\n"
+    "Create a detailed test case for this requirement.\n"
+    "Test case:\n"
+)
 
-result_1 = generate_user_story("Create a test case for the requirement: 'User should be able to create and manage a shopping list'")
+# input_text = (
+#     "Generate a detailed test case for the requirement:\n"
+#     "'User should be able to create and manage a shopping list'.\n"
+#     "Test case:\n"
+# )
 
-print(result_1)
+# Токенизация с вниманием и маской
+inputs = tokenizer.encode_plus(
+    input_text,
+    return_tensors='pt',
+    max_length=512,
+    padding='max_length',
+    truncation=True
+)
+
+# Установка pad_token_id, если его нет
+if tokenizer.pad_token is None:
+    tokenizer.pad_token = tokenizer.eos_token
+
+# Генерация с ограничением только новых токенов
+outputs = model.generate(
+    input_ids=inputs['input_ids'],
+    attention_mask=inputs['attention_mask'],
+    max_new_tokens=200,  # увеличиваем, чтобы дать больше простора для ответа
+    do_sample=True,
+    temperature=0.5,
+    top_p=0.9,
+    top_k=50,
+    num_return_sequences=1,
+    pad_token_id=tokenizer.eos_token_id
+)
+
+generated_text = tokenizer.decode(outputs[0], skip_special_tokens=True)
+
+print("Input:", input_text)
+print("Output:", generated_text)

@@ -36,7 +36,7 @@ train_test_split = tokenized_dataset.train_test_split(test_size=0.1)
 
 # Определение аргументов для обучения
 training_args = TrainingArguments(
-    output_dir="./gpt2_user_stories_model",
+    output_dir="content/drive/MyDrive/gpt2_finetuned",
     learning_rate=5e-5,
     per_device_train_batch_size=4,
     num_train_epochs=5,
@@ -58,8 +58,8 @@ trainer = Trainer(
 trainer.train()
 
 # Сохранение модели после обучения
-trainer.save_model("./gpt2_user_stories_model")
-tokenizer.save_pretrained("./gpt2_user_stories_model")
+trainer.save_model("./gpt2_finetuned")
+tokenizer.save_pretrained("./gpt2_finetuned")
 
 # Функция для генерации юзер-историй на основе требований
 def generate_user_story(input_specification):

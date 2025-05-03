@@ -1,5 +1,6 @@
 /.idea
 /.venv
 /logs
-/gpt2_user_stories_model
-/t5_user_stories_model
+/content/drive/MyDrive/gpt2_finetuned
+/content/drive/MyDrive/t5_user_stories_model
+/content/drive/MyDrive/bart_test_case_saved

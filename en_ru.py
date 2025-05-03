@@ -14,7 +14,7 @@ translated = translator.translate(text_to_translate, src='ru', dest='en')
 print(f"Исходный текст: {text_to_translate}")
 print(f"Переведенный текст: {translated.text}")
 
-with open('us_eng.txt', 'r', encoding='utf-8') as file:
+with open('data/us_eng.txt', 'r', encoding='utf-8') as file:
     for x in file.readlines():
         en_line = x.strip()
         translated = translator.translate(en_line, src='en', dest='ru')
