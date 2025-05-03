@@ -25,30 +25,23 @@ Home - Learn english like a native with YouTube
                             <!-- <button type="submit">Generate Test Case</button> -->
                             <input type="submit" class="btn btn-outline-light btn-lg px-4" value="Start to generate Test Case">
                         </form>
-                        {% if test_case %}
+                        {% if list_of_tests %}
                             <h2>Generated Test Case:</h2>
 
                             <!-- <p>{{ test_case }}</p> -->
 
                             <table class="table table-dark table-striped">
-                              <thead>
-                                <tr>
-                                  <th>ID</th>
-                                  <th>Title test case</th>
-                                  <th>Steps</th>
-                                  <th>Expected Result</th>
-                                </tr>
-                              </thead>
-                              <tbody>
-                                {% for test in list_of_tests %}
-                                <tr>
-                                  <td>{{ test.ID }}</td>
-                                  <td>{{ test['Title test case'] }}</td>
-                                  <td>{{ test['Steps'] }}</td>
-                                  <td>{{ test['Expected Result'] }}</td>
-                                </tr>
-                                {% endfor %}
-                              </tbody>
+                              <tr>
+                                <th>ID</th><th>Title</th><th>Steps</th><th>Expected</th>
+                              </tr>
+                              {% for t in list_of_tests %}
+                              <tr>
+                                <td>{{ t.ID }}</td>
+                                <td>{{ t['Title test case'] }}</td>
+                                <td>{{ t['Steps'] }}</td>
+                                <td>{{ t['Expected Result'] }}</td>
+                              </tr>
+                              {% endfor %}
                             </table>
 
                         {% endif %}

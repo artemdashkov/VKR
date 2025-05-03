@@ -18,7 +18,7 @@ def index():
 
     if request.method == 'POST':
         user_story = request.form['user_story']
-        # Токенизация и генерация
+        # Токенизация входных данных
         inputs = tokenizer(
             user_story,
             max_length=512,
@@ -26,6 +26,7 @@ def index():
             truncation=True,
             return_tensors='pt'
         )
+        # Генерация тест-кейса
         outputs = model.generate(
             input_ids=inputs['input_ids'],
             attention_mask=inputs['attention_mask'],
@@ -37,14 +38,17 @@ def index():
             num_return_sequences=1,
             pad_token_id=tokenizer.eos_token_id
         )
+        # Расшифровка
         test_case_text = tokenizer.decode(outputs[0], skip_special_tokens=True)
 
-        # Просто делим ответ на 3 строки
+        # Простое деление текста на части
         lines = test_case_text.split('\n')
+
         title = lines[0] if len(lines) > 0 else "Title"
         steps = lines[1] if len(lines) > 1 else "Steps"
         expected = lines[2] if len(lines) > 2 else "Expected Result"
 
+        # Добавляем в список для таблицы
         list_of_tests.append({
             'ID': 1,
             'Title test case': title,
@@ -53,6 +57,7 @@ def index():
         })
 
     return render_template('index.html', list_of_tests=list_of_tests)
+
 
 if __name__ == '__main__':
     app.run(debug=True)
