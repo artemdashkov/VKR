@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block title %}
-Home - Learn english like a native with YouTube
+Home - Generate Test Case from User Story
 {% endblock %}
 
 
@@ -15,26 +15,28 @@ Home - Learn english like a native with YouTube
                         <form method="post">
 
                             <p class="fs-5 mb-4">
-                                Insert User Story in the field below:
+                                Insert User Story (or User Stories) in the area below:
                             </p>
                             <footer class="blockquote-footer text-grey">
-                                Example of User Story: User must be able to register with a valid email and a strong password.
+                                Example of User Story: <br>User must be able to register with a valid email and a strong password.
+                                                        <br>User must receive an error message for invalid login.
                             </footer>
 
-                            <textarea id="user_story" name="user_story" rows="4" class="form-control" placeholder="Insert User Story or User Stories">{{ user_story }}</textarea>
+                            <textarea id="user_story" name="user_story" rows="4" class="form-control" placeholder="Insert User Story (or User Stories from a new lines)">{{ user_story }}</textarea>
                             <br>
-                            <input type="submit" class="btn btn-outline-light btn-lg px-4" value="Start to generate Test Case">
+                            <input type="submit" class="btn btn-warning btn-lg px-4" value="Start to generate Test Case">
                         </form>
                         {% if list_of_tests %}
                                 <br>
                                 <table class="table table-dark table-striped text-start">
                                     <h2>Generated Test Case:</h2>
                                   <tr>
-                                    <th scope="col">ID</th><th scope="col">Title</th><th scope="col">Steps</th><th scope="col">Expected result</th>
+                                    <th scope="col">ID</th><th scope="col">User Story</th><th scope="col">Title of Test Case</th><th scope="col">Steps</th><th scope="col">Expected result</th>
                                   </tr>
                                   {% for t in list_of_tests %}
                                   <tr>
                                     <td>{{ t.ID }}</td>
+                                    <td>{{ t.User_story }}</td>
                                     <td>{{ t['Title test case'] }}</td>
                                     <td >{% for step in t['Steps'] %} {{step}} <br> {% endfor %}</td>
                                     <td>{{ t['Expected Result'] }}</td>
